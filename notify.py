@@ -11,6 +11,11 @@ BOARDS = {
 WEBHOOK = os.environ["DISCORD_WEBHOOK_URL"]
 STATE = "state.json"
 KST = timezone(timedelta(hours=9))
+
+def clean_cookie(raw):
+    parts = raw.replace("\r", "\n").replace("\n", ";").split(";")
+    return "; ".join(p.strip() for p in parts if p.strip())
+    
 HEADERS = {
     "User-Agent": ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
                    "(KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"),
@@ -18,8 +23,9 @@ HEADERS = {
     "Accept-Language": "ko-KR,ko;q=0.9,en;q=0.8",
     "Referer": "https://game.naver.com/",
     "Origin": "https://game.naver.com",
-    "Cookie": os.environ.get("NAVER_COOKIE", ""),
+    "Cookie": clean_cookie(os.environ.get("NAVER_COOKIE", "")),
 }
+
 SKIP_LINES = ("안녕하세요, 협객 여러분", "연운 GM 연지입니다")
 
 
