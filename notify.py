@@ -12,9 +12,15 @@ WEBHOOK = os.environ["DISCORD_WEBHOOK_URL"]
 STATE = "state.json"
 KST = timezone(timedelta(hours=9))
 HEADERS = {
-    "User-Agent": "Mozilla/5.0",
+    "User-Agent": ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                   "(KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"),
+    "Accept": "application/json, text/plain, */*",
+    "Accept-Language": "ko-KR,ko;q=0.9,en;q=0.8",
     "Referer": "https://game.naver.com/",
     "Origin": "https://game.naver.com",
+    "Sec-Fetch-Dest": "empty",
+    "Sec-Fetch-Mode": "cors",
+    "Sec-Fetch-Site": "same-site",
 }
 SKIP_LINES = ("안녕하세요, 협객 여러분", "연운 GM 연지입니다")
 
