@@ -18,9 +18,7 @@ HEADERS = {
     "Accept-Language": "ko-KR,ko;q=0.9,en;q=0.8",
     "Referer": "https://game.naver.com/",
     "Origin": "https://game.naver.com",
-    "Sec-Fetch-Dest": "empty",
-    "Sec-Fetch-Mode": "cors",
-    "Sec-Fetch-Site": "same-site",
+    "Cookie": os.environ.get("NAVER_COOKIE", ""),
 }
 SKIP_LINES = ("안녕하세요, 협객 여러분", "연운 GM 연지입니다")
 
@@ -30,8 +28,13 @@ def fetch(board_id):
     r = requests.get(url, headers=HEADERS, timeout=20, params={
         "boardId": board_id, "buffFilteringYN": "N",
         "limit": 25, "offset": 0, "order": "NEW"})
-    r.raise_for_status()
-    feeds = r.json()["content"]["feeds"]
+    try:
+        data = r.json()
+    except ValueError:
+        raise RuntimeError(f"HTTP {r.status_code}, JSON 아님: {r.text[:200]}")
+    if r.status_code != 200 or data.get("code") != 200:
+        raise RuntimeError(f"HTTP {r.status_code}, code {data.get('code')}: {data.get('message')}")
+    feeds = data["content"]["feeds"]
     return [f for f in feeds if not f["feed"].get("hideByCleanBot")]
 
 
