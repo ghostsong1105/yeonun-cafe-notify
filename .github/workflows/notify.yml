@@ -16,6 +16,7 @@ jobs:
       - run: python notify.py
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          NAVER_COOKIE: ${{ secrets.NAVER_COOKIE }}
       - run: |
           git config user.name "bot"
           git config user.email "bot@users.noreply.github.com"
